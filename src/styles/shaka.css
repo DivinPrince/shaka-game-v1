@@ -108,7 +108,7 @@ div#container
   section#numbers-parent
   button.position-of-player1.position-of-player2::after {
   content: "";
-  background: #777777;
+  background: #333;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -197,7 +197,7 @@ div#container section#numbers-parent div {
 }
 div#container section#numbers-parent div button {
   width: 42px;
-  height: 42px;
+  height: 35px;
   font-size: 18px;
   margin: 10px;
   justify-content: center;

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Shaka Game - Multiplayer</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/src/styles/index.css">
+    <link rel="stylesheet" href="/src/styles/shaka.css">
+    <link rel="stylesheet" href="/src/styles/multiplayer.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="dark-theme">
+    <div id="container">
+        <h2 id="Game-title"><span id="one">Shaka</span> <span id="two">Multiplayer</span></h2>
+
+        <!-- Connection Status Indicator -->
+        <div id="connection-status" class="connecting">
+            <span class="status-dot"></span>
+            <span class="status-text">Connecting...</span>
+        </div>
+
+        <!-- Multiplayer Menu -->
+        <div id="multiplayer-menu">
+            <div class="menu-section">
+                <h3>Join or Create a Room</h3>
+                <div class="menu-options">
+                    <button id="create-room-btn" class="menu-btn">Create Room</button>
+                    <button id="join-room-btn" class="menu-btn">Join Room</button>
+                    <a href="/" class="menu-btn back-btn">Back to Main Menu</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Room Form -->
+        <div id="create-room-form" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Create a Room</h3>
+                <form id="create-room-form-element">
+                    <div class="form-group">
+                        <label for="player-name">Your Name:</label>
+                        <input type="text" id="player-name" required minlength="3" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="max-players">Maximum Players (2-10):</label>
+                        <select id="max-players">
+                            <option value="2">2 Players</option>
+                            <option value="3">3 Players</option>
+                            <option value="4" selected>4 Players</option>
+                            <option value="6">6 Players</option>
+                            <option value="8">8 Players</option>
+                            <option value="10">10 Players</option>
+                        </select>
+                    </div>
+                    <div class="form-group controls-group">
+                        <h4>Controls</h4>
+                        <div class="control-inputs">
+                            <div class="control-input">
+                                <label for="control-up">Up:</label>
+                                <input type="text" id="control-up" value="ArrowUp" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="control-right">Right:</label>
+                                <input type="text" id="control-right" value="ArrowRight" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="control-down">Down:</label>
+                                <input type="text" id="control-down" value="ArrowDown" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="control-left">Left:</label>
+                                <input type="text" id="control-left" value="ArrowLeft" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="control-confirm">Confirm:</label>
+                                <input type="text" id="control-confirm" value="Enter" readonly>
+                            </div>
+                        </div>
+                        <button type="button" id="customize-controls-btn">Customize Controls</button>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn">Create Room</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Join Room Form -->
+        <div id="join-room-form" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Join a Room</h3>
+                <form id="join-room-form-element">
+                    <div class="form-group">
+                        <label for="join-player-name">Your Name:</label>
+                        <input type="text" id="join-player-name" required minlength="3" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="room-code">Room Code:</label>
+                        <input type="text" id="room-code" required minlength="6" maxlength="6" placeholder="ABCDEF">
+                    </div>
+                    <div class="form-group controls-group">
+                        <h4>Controls</h4>
+                        <div class="control-inputs">
+                            <div class="control-input">
+                                <label for="join-control-up">Up:</label>
+                                <input type="text" id="join-control-up" value="ArrowUp" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="join-control-right">Right:</label>
+                                <input type="text" id="join-control-right" value="ArrowRight" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="join-control-down">Down:</label>
+                                <input type="text" id="join-control-down" value="ArrowDown" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="join-control-left">Left:</label>
+                                <input type="text" id="join-control-left" value="ArrowLeft" readonly>
+                            </div>
+                            <div class="control-input">
+                                <label for="join-control-confirm">Confirm:</label>
+                                <input type="text" id="join-control-confirm" value="Enter" readonly>
+                            </div>
+                        </div>
+                        <button type="button" id="join-customize-controls-btn">Customize Controls</button>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn">Join Room</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Waiting Room -->
+        <div id="waiting-room" style="display: none;">
+            <div class="waiting-header">
+                <h3>Waiting for Players</h3>
+                <div class="room-info">
+                    <div class="room-code">
+                        <span>Room Code:</span>
+                        <span id="display-room-code" class="code">ABCDEF</span>
+                        <button id="copy-room-code" title="Copy room code">📋</button>
+                    </div>
+                    <div class="player-count">
+                        <span>Players:</span>
+                        <span id="player-count">1/4</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="players-list" id="players-list">
+                <!-- Players will be dynamically added here -->
+            </div>
+            
+            <div class="waiting-actions">
+                <button id="ready-btn" class="primary-btn">Ready</button>
+                <button id="leave-room-btn" class="cancel-btn">Leave Room</button>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <section id="numbers" style="display: none;">
+            <section id="numbers-head">
+                <!-- Player scores will be dynamically added here -->
+                <div class="dark-theme">
+                    <p>Shaka:</p>
+                    <span id="current-target" class="1">One</span>
+                </div>
+            </section>
+            <section id="numbers-parent"></section>
+            <section class="pause pause-element" id="pause-cover" style="display: none;">
+                <div class="up">
+                    <h1>P u e </h1>
+                </div>
+                <div class="down">
+                    <h1> a s d</h1>
+                </div>
+                <div class="pause-actions">
+                    <button id="resume-btn">Resume</button>
+                    <button id="exit-game-btn">Exit Game</button>
+                </div>
+            </section>
+            <section id="game-over" style="display: none;">
+                <h1>Game Over</h1>
+                <div class="multiplayer-results" id="multiplayer-results">
+                    <!-- Results will be dynamically added here -->
+                </div>
+                <div class="game-over-actions">
+                    <button id="play-again-btn">Play Again</button>
+                    <button id="return-to-menu-btn">Return to Menu</button>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <!-- Toast for notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Main multiplayer script -->
+    <script type="module" src="/src/multiplayer/main.js"></script>
+</body>
+
+</html> 

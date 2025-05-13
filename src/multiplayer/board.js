@@ -1,14 +1,13 @@
 /**
- * Unified Board class for both single-player and multiplayer functionality
+ * Multiplayer Board class
  */
-export class Board {
+export class MultiplayerBoard {
   /**
-   * Create a new game board
+   * Create a new multiplayer game board
    * @param {Object} config - Board configuration
    * @param {string} config.containerId - ID of the container element
    * @param {number} config.rows - Number of rows
    * @param {number} config.cols - Number of columns
-   * @param {boolean} config.isMultiplayer - Whether this board is in multiplayer mode
    */
   constructor(config = {}) {
     this.container = document.querySelector(config.containerId || 'section#numbers-parent');
@@ -17,19 +16,19 @@ export class Board {
     this.totalCells = this.rows * this.cols;
     this.buttons = [];
     this.numbers = [];
-    this.isMultiplayer = !!config.isMultiplayer;
   }
 
   /**
-   * Initialize the board
-   * @param {Array} numbers - Board numbers from server (only used in multiplayer mode)
+   * Initialize the board with provided numbers
+   * @param {Array} numbers - Board numbers from server
    */
   init(numbers = null) {
-    if (this.isMultiplayer && numbers) {
+    if (numbers) {
       this.numbers = numbers;
     } else {
       this.generateRandomNumbers();
     }
+    
     this.createGrid();
   }
 
@@ -111,11 +110,7 @@ export class Board {
     }
     
     try {
-      const elements = [...document.querySelectorAll(`.${playerClass}`)];
-      if (!this.isMultiplayer) {
-        console.log(`Found ${elements.length} elements with class ${playerClass}`);
-      }
-      return elements;
+      return [...document.querySelectorAll(`.${playerClass}`)];
     } catch (error) {
       console.error('Error in getFoundByPlayer:', error);
       return [];
@@ -124,7 +119,7 @@ export class Board {
 
   /**
    * Reset the board
-   * @param {Array} numbers - New numbers for the board (optional, used in multiplayer mode)
+   * @param {Array} numbers - New numbers for the board (optional)
    */
   reset(numbers = null) {
     this.buttons.forEach(button => {
@@ -132,7 +127,7 @@ export class Board {
       button.className = 'number dark-theme';
     });
     
-    if (this.isMultiplayer && numbers) {
+    if (numbers) {
       this.numbers = numbers;
     } else {
       this.generateRandomNumbers();
