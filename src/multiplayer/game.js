@@ -597,10 +597,9 @@ export class MultiplayerGame {
     // Update player positions and scores
     room.players.forEach(serverPlayer => {
       const player = this.players.find(p => p.id === serverPlayer.id);
-      if (!player) return;
-      
-      // Update position if changed - skip updating position for the player who just made the move
-      if (player.positionIndex !== serverPlayer.position && (!lastMove || player.id !== lastMove.playerId)) {
+      if (!player || player.id === this.playerId) return;
+      // Update position if changed
+      if (player.positionIndex !== serverPlayer.position) {
         player.updatePosition(serverPlayer.position, this.board.getAllButtons());
       }
       
