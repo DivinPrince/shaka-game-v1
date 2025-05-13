@@ -359,6 +359,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 2rem;
 }
 
 .player-score-name {
@@ -504,65 +505,296 @@ div#container section#numbers-parent button[class*="position-of-player"] {
   z-index: 2;
 }
 
-/* Apply box shadow when multiple players on same space */
-div#container section#numbers-parent button.position-of-player1.position-of-player2,
-div#container section#numbers-parent button.position-of-player1.position-of-player3,
-div#container section#numbers-parent button.position-of-player1.position-of-player4,
-div#container section#numbers-parent button.position-of-player2.position-of-player3,
-div#container section#numbers-parent button.position-of-player2.position-of-player4,
-div#container section#numbers-parent button.position-of-player3.position-of-player4,
-div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3,
-div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player4,
-div#container section#numbers-parent button.position-of-player1.position-of-player3.position-of-player4,
-div#container section#numbers-parent button.position-of-player2.position-of-player3.position-of-player4,
-div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3.position-of-player4 {
-  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.7);
-}
-
-/* Remove all ::before and ::after elements that were causing issues */
+/* Remove ::before and ::after display:none as we'll be using them */
 div#container section#numbers-parent button[class*="position-of-player"]::before,
 div#container section#numbers-parent button[class*="position-of-player"]::after {
-  display: none;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  outline: none;
+  border: none;
+  transform: translate(-50%, -50%);
 }
 
-/* Generated dynamically positioned outlines based on player colors */
-div#container section#numbers-parent button.position-of-player1 {
+/* Two players on same position - use ::before and ::after like in shaka.css */
+div#container section#numbers-parent button.position-of-player1.position-of-player2 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2::before {
+  background-image: linear-gradient(-90deg, var(--player2-color, orange) 50%, var(--player1-color, green) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3::before {
+  background-image: linear-gradient(-90deg, var(--player3-color, red) 50%, var(--player1-color, green) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player4::before {
+  background-image: linear-gradient(-90deg, var(--player4-color, blue) 50%, var(--player1-color, green) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3::before {
+  background-image: linear-gradient(-90deg, var(--player3-color, red) 50%, var(--player2-color, orange) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player4::before {
+  background-image: linear-gradient(-90deg, var(--player4-color, blue) 50%, var(--player2-color, orange) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player3.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player3.position-of-player4::before {
+  background-image: linear-gradient(-90deg, var(--player4-color, blue) 50%, var(--player3-color, red) 50%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player3.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+/* Three players on same position */
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3::before {
+  background-image: linear-gradient(-90deg, 
+    var(--player3-color, red) 33.3%, 
+    var(--player2-color, orange) 33.3% 66.6%, 
+    var(--player1-color, green) 66.6%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player4::before {
+  background-image: linear-gradient(-90deg, 
+    var(--player4-color, blue) 33.3%, 
+    var(--player2-color, orange) 33.3% 66.6%, 
+    var(--player1-color, green) 66.6%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3.position-of-player4::before {
+  background-image: linear-gradient(-90deg, 
+    var(--player4-color, blue) 33.3%, 
+    var(--player3-color, red) 33.3% 66.6%, 
+    var(--player1-color, green) 66.6%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player3.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3.position-of-player4::before {
+  background-image: linear-gradient(-90deg, 
+    var(--player4-color, blue) 33.3%, 
+    var(--player3-color, red) 33.3% 66.6%, 
+    var(--player2-color, orange) 66.6%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player2.position-of-player3.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+/* Four players on same position */
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3.position-of-player4 {
+  position: relative;
+  outline: none;
+  border: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3.position-of-player4::before {
+  background-image: linear-gradient(-90deg, 
+    var(--player4-color, blue) 25%, 
+    var(--player3-color, red) 25% 50%, 
+    var(--player2-color, orange) 50% 75%, 
+    var(--player1-color, green) 75%);
+  height: 130%;
+  width: 123%;
+}
+
+div#container section#numbers-parent button.position-of-player1.position-of-player2.position-of-player3.position-of-player4::after {
+  background: #333;
+  height: 100%;
+  width: 100%;
+}
+
+/* Single player positions use outlines */
+div#container section#numbers-parent button.position-of-player1:not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]) {
   outline: 5px solid var(--player1-color, green) !important;
 }
 
-div#container section#numbers-parent button.position-of-player2 {
+div#container section#numbers-parent button.position-of-player2:not([class*="position-of-player1"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]) {
   outline: 5px solid var(--player2-color, orange) !important;
 }
 
-div#container section#numbers-parent button.position-of-player3 {
+div#container section#numbers-parent button.position-of-player3:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player4"]) {
   outline: 5px solid var(--player3-color, red) !important;
 }
 
-div#container section#numbers-parent button.position-of-player4 {
+div#container section#numbers-parent button.position-of-player4:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]) {
   outline: 5px solid var(--player4-color, blue) !important;
 }
 
-div#container section#numbers-parent button.position-of-player5 {
+div#container section#numbers-parent button.position-of-player5:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]) {
   outline: 5px solid var(--player5-color, purple) !important;
 }
 
-div#container section#numbers-parent button.position-of-player6 {
+div#container section#numbers-parent button.position-of-player6:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]):not([class*="position-of-player5"]) {
   outline: 5px solid var(--player6-color, pink) !important;
 }
 
-div#container section#numbers-parent button.position-of-player7 {
+div#container section#numbers-parent button.position-of-player7:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]):not([class*="position-of-player5"]):not([class*="position-of-player6"]) {
   outline: 5px solid var(--player7-color, cyan) !important;
 }
 
-div#container section#numbers-parent button.position-of-player8 {
+div#container section#numbers-parent button.position-of-player8:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]):not([class*="position-of-player5"]):not([class*="position-of-player6"]):not([class*="position-of-player7"]) {
   outline: 5px solid var(--player8-color, yellow) !important;
 }
 
-div#container section#numbers-parent button.position-of-player9 {
+div#container section#numbers-parent button.position-of-player9:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]):not([class*="position-of-player5"]):not([class*="position-of-player6"]):not([class*="position-of-player7"]):not([class*="position-of-player8"]) {
   outline: 5px solid var(--player9-color, gray) !important;
 }
 
-div#container section#numbers-parent button.position-of-player10 {
+div#container section#numbers-parent button.position-of-player10:not([class*="position-of-player1"]):not([class*="position-of-player2"]):not([class*="position-of-player3"]):not([class*="position-of-player4"]):not([class*="position-of-player5"]):not([class*="position-of-player6"]):not([class*="position-of-player7"]):not([class*="position-of-player8"]):not([class*="position-of-player9"]) {
   outline: 5px solid var(--player10-color, brown) !important;
 }
 
