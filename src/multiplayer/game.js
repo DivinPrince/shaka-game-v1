@@ -84,13 +84,12 @@ export class MultiplayerGame {
       
       const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       // Create socket connection with explicit configuration
-      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'wss://shaka-game-multiplayer-server.onrender.com';
+      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'https://shaka-game-multiplayer-server.onrender.com';
       console.log('Attempting to connect to Socket.io server at:', serverUrl);
       
       this.socket = io(serverUrl, {
-        reconnectionAttempts: 5,
-        reconnectionDelay: 1000,
-        timeout: 20000, // Increase timeout to 20 seconds for slower connections
+        reconnectionAttempts: 3,
+        timeout: 10000,
         transports: ['websocket', 'polling'],
         withCredentials: false,
         forceNew: true
@@ -98,6 +97,19 @@ export class MultiplayerGame {
       
       // Set up socket event handlers
       this.handleSocketEvents();
+      
+      // Add a connection timeout
+      this.connectionTimeout = setTimeout(() => {
+        if (!this.socketConnected) {
+          console.error('Socket connection timeout');
+          this.updateConnectionStatus('disconnected', 'Connection Timeout');
+          
+          // Show error if UI is initialized
+          if (this.ui) {
+            this.ui.showToast('Failed to connect to server. Make sure the server is running on port 3000.', 'error');
+          }
+        }
+      }, 5000);
     } catch (error) {
       console.error('Error initializing socket:', error);
       this.updateConnectionStatus('disconnected', 'Connection Error');
