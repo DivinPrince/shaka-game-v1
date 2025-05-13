@@ -18,6 +18,8 @@ section#names {
   height: 100%;
   position: fixed;
   transition: 2s ease-in-out;
+  z-index: 10;
+  opacity: 1;
 }
 section#names div#player1-cover {
   display: flex;
@@ -59,6 +61,8 @@ section#names button#start {
 }
 section#names.open {
   pointer-events: none;
+  transition: transform 2s ease-in-out, opacity 1.5s ease-in-out;
+  opacity: 0.95;
 }
 section#names.open div#player1-cover {
   left: -100%;

@@ -3,9 +3,9 @@
 
 <head>
     <title>Shaka Game</title>
-    <link rel="icon" href="./icon.ico">
-    <link rel="stylesheet" href="./styles/index.css">
-    <script defer src="./shaka.js"></script>
+    <link rel="icon" href="/icon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body class="dark-theme">
@@ -164,7 +164,7 @@
         <div id="pages">
             <div id="page2" class="page over">
                 <h2>numbers</h2>
-                <img src="./bg number.png" alt="">
+                <img src="/bg number.png" alt="">
                 <div id="numbers-options" class="intro-option">
                     <label for="time">
                         <p>Time:</p>
@@ -199,6 +199,8 @@
             </div>
         </div>
     </section>
+    <!-- Use Vite's module script for better performance and module support -->
+    <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>
