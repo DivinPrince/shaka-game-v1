@@ -120,36 +120,36 @@ export class MultiplayerGame {
         console.log('Received WebSocket message:', data);
         
         // Handle different event types
-        switch (data.type) {
+        switch (data.event) {
           case 'room_created':
-            this.handleRoomCreated(data.payload);
+            this.handleRoomCreated(data.data);
             break;
           case 'room_joined':
-            this.handleRoomJoined(data.payload);
+            this.handleRoomJoined(data.data);
             break;
           case 'player_joined':
-            this.handlePlayerJoined(data.payload);
+            this.handlePlayerJoined(data.data);
             break;
           case 'player_update':
-            this.handlePlayerUpdate(data.payload);
+            this.handlePlayerUpdate(data.data);
             break;
           case 'player_left':
-            this.handlePlayerLeft(data.payload);
+            this.handlePlayerLeft(data.data);
             break;
           case 'host_changed':
-            this.handleHostChanged(data.payload);
+            this.handleHostChanged(data.data);
             break;
           case 'game_countdown_start':
-            this.handleGameCountdownStart(data.payload);
+            this.handleGameCountdownStart(data.data);
             break;
           case 'game_start':
-            this.handleGameStart(data.payload);
+            this.handleGameStart(data.data);
             break;
           case 'game_update':
-            this.handleGameUpdate(data.payload);
+            this.handleGameUpdate(data.data);
             break;
           case 'error':
-            this.handleError(data.payload);
+            this.handleError(data.data);
             break;
           default:
             console.warn('Unhandled WebSocket message type:', data.type);
