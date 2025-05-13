@@ -599,8 +599,8 @@ export class MultiplayerGame {
       const player = this.players.find(p => p.id === serverPlayer.id);
       if (!player) return;
       
-      // Update position if changed
-      if (player.positionIndex !== serverPlayer.position) {
+      // Update position if changed - skip updating position for the player who just made the move
+      if (player.positionIndex !== serverPlayer.position && (!lastMove || player.id !== lastMove.playerId)) {
         player.updatePosition(serverPlayer.position, this.board.getAllButtons());
       }
       
