@@ -89,7 +89,6 @@ export class MultiplayerGame {
       
       this.socket = io(serverUrl, {
         reconnectionAttempts: 3,
-        timeout: 10000,
         transports: ['websocket', 'polling'],
         withCredentials: false,
         forceNew: true
