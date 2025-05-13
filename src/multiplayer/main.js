@@ -15,7 +15,7 @@ function loadSocketIoScript(serverUrl = 'http://localhost:3000') {
     }
     
     const script = document.createElement('script');
-    script.src = `https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js`;
+    script.src = `https://shaka-game-multiplayer-server.onrender.com/socket.io/socket.io.js`;
     script.async = true;
     
     script.onload = () => {
