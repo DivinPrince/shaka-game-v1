@@ -1,0 +1,355 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: Agency FB;
+  /* font-family: French Script MT; */
+  /* font-family: 'Bauhaus 93'; */
+  /* font-family: 'Kristen ITC'; */
+}
+body {
+  transition: all 1s ease-out;
+}
+section#names {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  transition: 2s ease-in-out;
+}
+section#names div#player1-cover {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: grayscale(1) blur(5px);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-right: 10px solid green;
+  transition: 2s ease-in-out;
+}
+section#names div#player2-cover {
+  display: flex;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: grayscale(1) blur(5px);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-left: 10px solid orange;
+  transition: 2s ease-in-out;
+}
+section#names button#start {
+  font-size: 100px;
+  font-weight: bolder;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  background: none;
+  color: #fff;
+  text-transform: capitalize;
+}
+section#names.open {
+  pointer-events: none;
+}
+section#names.open div#player1-cover {
+  left: -100%;
+}
+section#names.open div#player2-cover {
+  right: -100%;
+}
+section#names.open button#start {
+  top: -100%;
+}
+
+/* `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~` */
+
+/* start ``````````````````````````````````````````````````````````````````````````````````````` */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  On Same Position  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ````````````````````````````````````````````````````````````````````````````````````````````` */
+
+div#container
+  section#numbers-parent
+  button.position-of-player1.position-of-player2 {
+  position: relative;
+  outline: none;
+  border: none;
+}
+
+div#container
+  section#numbers-parent
+  button.position-of-player1.position-of-player2::before {
+  content: "";
+  background-image: linear-gradient(-90deg, orange 50%, green 50%);
+  height: 130%;
+  width: 123%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  outline: none;
+  border: none;
+  transform: translate(-50%, -50%);
+}
+
+div#container
+  section#numbers-parent
+  button.position-of-player1.position-of-player2::after {
+  content: "";
+  background: #777777;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  outline: none;
+  border: none;
+  transform: translate(-50%, -50%);
+}
+
+/* ````````````````````````````````````````````````````````````````````````````````````````````` */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  On Same Position  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ````````````````````````````````````````````````````````````````````````````````````````` End */
+
+div#container {
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  /* padding: 20px; */
+  display: flex;
+  user-select: none;
+  flex-direction: column;
+  align-content: center;
+  align-items: stretch;
+  flex-wrap: nowrap;
+}
+h2 {
+  text-align: center;
+  font-size: 50px;
+  font-family: Agency FB;
+  font-weight: bolder;
+  letter-spacing: 5px;
+  /* transform: translateY(-10px); */
+}
+h2 span#one {
+  color: green;
+}
+h2 span#two {
+  color: orange;
+}
+div#container section#numbers-head {
+  justify-content: space-around;
+  display: flex;
+}
+div#container section#numbers-head > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  border-bottom: 4px solid;
+  padding: 0 25px;
+}
+div#container section#numbers-head div p {
+  padding: 0 20px 0 0;
+  font-size: 25px;
+}
+div#container section#numbers-head div span#current-target {
+  font-size: 25px;
+  text-transform: capitalize;
+}
+div#container section#numbers-head p span#current-target {
+  margin-left: 15px;
+  text-transform: capitalize;
+}
+div#container section#numbers-head span#player1 {
+  font-size: 25px;
+  color: green;
+}
+div#container section#numbers-head span#player2 {
+  font-size: 25px;
+  color: orange;
+}
+div#container section#numbers-parent {
+  padding: 20px;
+  width: 100%;
+}
+div#container section#numbers-parent div {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-around;
+}
+div#container section#numbers-parent div button {
+  width: 42px;
+  height: 42px;
+  font-size: 18px;
+  margin: 10px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  line-height: 0;
+  font-weight: 500;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+}
+/* div#container section#numbers-head input#player1-input, */
+div#container section#numbers-parent button.founded-by-player1 {
+  background-image: linear-gradient(
+    135deg,
+    green 25%,
+    rgba(0, 128, 0, 0.3) 20%,
+    green 10%,
+    rgba(0, 128, 0, 0.3) 10%
+  );
+  box-shadow: none;
+  /* color: white; */
+}
+div#container section#numbers-parent button.position-of-player1 {
+  outline: green solid 5px;
+}
+div#container section#numbers-head input#player1-input {
+  padding-left: 20px;
+  background-image: linear-gradient(135deg, green 25px, #fff 0);
+  color: green;
+  text-align: right;
+  letter-spacing: 2px;
+  width: 280px;
+  font-family: Agency FB;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all 1s ease-out;
+}
+body.dark-theme div#container section#numbers-head input#player1-input {
+  background-image: linear-gradient(135deg, green 25px, #222 0);
+  transition: all 1s ease-out;
+}
+
+div#container section#numbers-head input#player1-input::placeholder {
+  color: green;
+}
+
+/* div#container section#numbers-head input#player2-input, */
+div#container section#numbers-parent button.founded-by-player2 {
+  background-image: linear-gradient(
+    225deg,
+    orange 25%,
+    rgba(255, 166, 0, 0.3) 20%,
+    orange 10%,
+    rgba(255, 166, 0, 0.3) 10%
+  );
+  box-shadow: none;
+  /* color: white; */
+}
+div#container section#numbers-parent button.position-of-player2 {
+  outline: orange solid 5px;
+}
+
+div#container section#numbers-parent button.stolen1,
+div#container section#numbers-parent button.stolen2 {
+  background: rgb(255 0 0 / 50%);
+  box-shadow: 0 0 20px darkred, 0 0 40px firebrick, 0 0 60px red;
+}
+
+div#container section#numbers-head input#player2-input {
+  padding-right: 20px;
+  background-image: linear-gradient(225deg, orange 25px, #fff 0);
+  color: orange;
+  text-align: left;
+  letter-spacing: 2px;
+  width: 280px;
+  font-family: Agency FB;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all 1s ease-out;
+}
+body.dark-theme div#container section#numbers-head input#player2-input {
+  background-image: linear-gradient(225deg, orange 25px, #222 0);
+  transition: all 1s ease-out;
+}
+div#container section#numbers-head input#player2-input::placeholder {
+  color: orange;
+}
+
+.pause-element {
+  pointer-events: none;
+  color: #f4f4f4;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.pause-element .up {
+  position: relative;
+  width: 100vw;
+  height: 50vh;
+  transition: transform 0.5s ease-out;
+  backdrop-filter: grayscale(1) blur(5px);
+  background-color: #ffffff00;
+  border-bottom: 10px solid orange;
+}
+.pause-element .down {
+  width: 100vw;
+  height: 50vh;
+  transition: transform 0.5s ease-out;
+  pointer-events: none;
+  backdrop-filter: grayscale(1) blur(5px);
+  background-color: #ffffff00;
+  border-top: 10px solid green;
+}
+.pause-element .up h1 {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-61%, 26%);
+  backdrop-filter: grayscale(1) blur(5px);
+  font-size: 82px;
+  z-index: 1;
+  color: #111;
+}
+.pause-element .down h1 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-39%, -95%);
+  backdrop-filter: grayscale(1) blur(5px);
+  font-size: 82px;
+  color: #111;
+}
+
+.pause-element.pause .up {
+  transform: translateY(-100vh);
+}
+.pause-element.pause .down {
+  transform: translateY(100vh);
+}
+#pause-alphabet.pause-element .down,
+#pause-alphabet.pause-element .up {
+  backdrop-filter: grayscale(1) blur(10px);
+}
+/*#pouse-cover:hover .up{
+	transform: translateY(-100vh)
+}
+#pouse-cover:hover .down{
+	transform: translateY(100vh)
+}*/
+
+#bgimage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}

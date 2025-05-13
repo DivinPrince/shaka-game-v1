@@ -1,0 +1,168 @@
+section#alphabet,
+section#numbers {
+    flex-direction: column;
+}
+#introPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* background: #1223; */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: grayscale(1) blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+}
+
+#introPage > h1 {
+    text-transform: capitalize;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    transition: all .5s 1s ease;
+}
+#introPage button {
+    position: absolute;
+    top: 50%;
+    right: 50px;
+    transform: translate(-50%, -50%);
+    padding: 7px 35px;
+    font-family: agency FB;
+    font-size: 30px;
+    background: red;
+}
+#introPage > h1 > span {
+    font-size: 35ch;
+    transition: all 1s 1s ease;
+    margin-left: 30px;
+}
+
+#introPage:hover > h1 {
+/* #introPage > h1 { */
+    top: 10%;
+}
+#introPage:hover > h1 > span {
+/* #introPage > h1 > span { */
+    font-size: 10ch;
+    margin-left: 10px;
+}
+
+#introPage > h1 > span:first-child {
+    color: orange;
+}
+#introPage > h1 > span:last-child {
+    color: lime;
+}
+#introPage > div#pages {
+    display: flex;
+    align-items: center;
+}
+#introPage > div#pages > div {
+    border: 1px solid;
+    width: 300px;
+    height: 220px;
+    margin: 10px;
+    opacity: 0;
+    transition: width .4s ease, height .4s ease, opacity 2s 1s ease-in;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+#introPage:hover > div#pages > div {
+/* #introPage > div#pages > div { */
+    opacity: 1;
+}
+#introPage > div#pages > div.over {
+    width: 580px;
+    height: 420px;
+}
+#page1 img,
+#page2 img,
+#page3 img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* opacity: .5; */
+    /* filter: grayscale(1); */
+}
+.page {
+    position: relative;
+    overflow: hidden;
+}
+.page.over .intro-option,
+.page.over h2 {
+    transform: translateY(0);
+}
+.page h2 {
+    text-transform: capitalize;
+    transform: translateY(-100%);
+    transition: .5s .5s ease;
+    /* filter: grayscale(); */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: grayscale(1) blur(5px);
+}
+.intro-option {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: grayscale(1) blur(5px);
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
+    transform: translateY(100%);
+    transition: .5s .5s ease;
+}
+
+.intro-option > label {
+    background: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    font-size: 2rem;
+    margin: 3px 0;
+}
+
+.intro-option > label > p{
+    background: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.intro-option > label > select,
+.intro-option > label > input {
+    background: rgb(0 0 0 / 85%);
+    font-size: 2rem;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 0 10px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.intro-option > label > input[type=checkbox] {
+    margin-left: 0;
+    width: 20px;
+    height: 20px;
+}
+
+#shapes-options > label,
+#shapes-options > input{
+    display: flex;
+}

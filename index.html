@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Shaka Game</title>
+    <link rel="icon" href="./icon.ico">
+    <link rel="stylesheet" href="./styles/index.css">
+    <script defer src="./shaka.js"></script>
+</head>
+
+<body class="dark-theme">
+    <div id="container">
+        <h2 id="Game-title"><span id="one">Shaka</span> <span id="two">Game</span> </h2>
+        <section id="numbers">
+            <section id="names" style="display: none;">
+                <div id="player1-cover">
+                    <button id="startOption">Option</button>
+                    <dir id="key1" class="flip">
+                        <div class="face front">
+                            <input type="text" list="friends" placeholder="Player 1">
+                        </div>
+                        <div class="face back">
+                            <span>Ready</span>
+                        </div>
+                    </dir>
+                </div>
+                <button id="start">vs</button>
+                <div id="player2-cover">
+                    <dir id="key2" class="flip">
+                        <div class="face front">
+                            <input type="text" list="friends" placeholder="Player 2">
+                        </div>
+                        <div class="face back">
+                            <span>Ready</span>
+                        </div>
+                    </dir>
+                </div>
+                <datalist id="friends">
+                    <option value="LEO">
+		    <option value="NIYONKURU Tresor">
+                    <option value="MANZI Peaceful">
+                    <option value="SHEMA Victoire">
+                    <option value="DIVIN Prince dullian">
+                    <option value="NKURUNZIZA Kennedy">
+                    <option value="CYUSA Hamdan">
+                    <option value="SHEMA Blessing">
+                    <option value="KAGABO David">
+                    <option value="UMUTONI Honorine">
+                    <option value="MUCYO Dieumerci">
+                    <option value="GAJU Grace Blender">
+                    <option value="KHEZA Kakanny">
+                    <option value="HABIMANA Mwiza Enzo">
+                    <option value="GATETE Fidel">
+                    <option value="MUNYANEZA Bonheur">
+                    <option value="SHEMA Elie">
+                </datalist>
+            </section>
+            <section id="numbers-head">
+                <input type="text" class="dark-theme" value="Player1" readonly id="player1-input"><span
+                    id="player1">0</span>
+
+                <div class="dark-theme">
+                    <p>Shaka:</p>
+                    <span id="current-target" class="1">One</span>
+                </div>
+
+                <span id="player2">0</span><input type="text" class="dark-theme" value="Player2" readonly
+                    id="player2-input">
+
+                <div id="menus" class="dark-theme">
+                    <p class="fas fa-compress" id="screen" onclick="closeFullscreen()"></p><p class="fas fa-adjust"
+                        onclick="theme()">☀️</p> 
+                </div>
+            </section>
+            <section id="numbers-parent"></section>
+            <section class="pause pause-element" id="pause-cover">
+                <div class="up">
+                    <button id="startOption">Option</button>
+                    <h1>P u e </h1>
+                </div>
+                <div class="down">
+                    <h1> a s d</h1>
+                </div>
+            </section>
+            <section id="options" style="display: none;">
+                <h1>Options</h1>
+                <button id="endOption">Back</button>
+                <div id="player-controls">
+                    <div id="controls1">
+                        <!-- <p>Color <i class="fas fa-long-arrow-alt-right"></i> <input type="color" value="#008000"></p> -->
+                        <p>To move up <i class="fas fa-long-arrow-alt-right"></i> <input type="text" readonly value="KeyW"></p>
+                        <p>To move right <i class="fas fa-long-arrow-alt-right"></i> <input type="text" readonly value="KeyD">
+                        </p>
+                        <p>To move down <i class="fas fa-long-arrow-alt-right"></i> <input type="text" readonly value="KeyS">
+                        </p>
+                        <p>To move left <i class="fas fa-long-arrow-alt-right"></i> <input type="text" readonly value="KeyA">
+                        </p>
+                        <p>To confirm <i class="fas fa-long-arrow-alt-right"></i> <input type="text" readonly value="CapsLock">
+                        </p>
+                        <!-- <img src="./controls2.png" alt=""> -->
+                    </div>
+                    <div id="controls2">
+                        <!-- <p><input type="color" value="#ffa500"> <i class="fas fa-long-arrow-alt-left"></i> Color</p> -->
+                        <p><input type="text" readonly value="ArrowUp"> <i class="fas fa-long-arrow-alt-left"></i> To move up
+                        </p>
+                        <p><input type="text" readonly value="ArrowRight"> <i class="fas fa-long-arrow-alt-left"></i> To move
+                            right</p>
+                        <p><input type="text" readonly value="ArrowDown"> <i class="fas fa-long-arrow-alt-left"></i> To move
+                            down</p>
+                        <p><input type="text" readonly value="ArrowLeft"> <i class="fas fa-long-arrow-alt-left"></i>To move left
+                        </p>
+                        <p><input type="text" readonly value="Enter"> <i class="fas fa-long-arrow-alt-left"></i> To confirm</p>
+                    </div>
+                </div>
+            </section>
+            <section id="game-over" style="display: none;">
+                <h1>Game Over</h1>
+                <div class="names">
+                    <p class="player1">KWIZERA Emmanuel</p>
+                    <button id="start">vs</button>
+                    <p class="player2">GATETE Fidel</p>
+                </div>
+                <div class="bord" id="move">
+                    <span>3728</span>
+                    <p>Move</p>
+                    <span>1883</span>
+                </div>
+                <div class="bord" id="power">
+                    <span>5</span>
+                    <p>Power</p>
+                    <span>6</span>
+                </div>
+                <div class="bord" id="saves">
+                    <span>2</span>
+                    <p>Saves</p>
+                    <span>1</span>
+                </div>
+                <div class="bord" id="stolen">
+                    <span>3</span>
+                    <p>Stolen</p>
+                    <span>5</span>
+                </div>
+                <div class="bord" id="score">
+                    <span>
+                        <div class="cover1"></div>
+                        <dir>70</dir>
+                    </span>
+                    <p>Score</p>
+                    <span>
+                        <div class="cover2"></div>
+                        <dir>30</dir>
+                    </span>
+                </div>
+                <form><button>Play Again</button></form>
+                <div id="winner">
+                    <div class="cover"></div>Winner is <span>Blessing</span>
+                </div>
+            </section>
+        </section>
+    </div>
+
+    <section id="introPage">
+        <h1 id="title"><span>shaka</span> <span>game</span></h1>
+        <div id="pages">
+            <div id="page2" class="page over">
+                <h2>numbers</h2>
+                <img src="./bg number.png" alt="">
+                <div id="numbers-options" class="intro-option">
+                    <label for="time">
+                        <p>Time:</p>
+                        <select id="time">
+                            <option value="3">3</option>
+                            <option selected value="5">5</option>
+                            <option value="7">7</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="100">none</option>
+                        </select>
+                    </label>
+                    <label for="language">
+                        <p>Languages:</p>
+                        <select id="language">
+                            <option value="kinyarwanda">Kinyarwanda</option>
+                            <option selected value="english">English</option>
+                            <option value="france">France</option>
+                            <option value="swahili" disabled>Swahili</option>
+                            <option value="roman">Roman</option>
+                        </select>
+                    </label>
+                    <label for="reader-switch">
+                        <p>Reader:</p>
+                        <input type="radio" name="reader" id="leader-on">
+                        <label for="leader-on"><span>On</span></label>
+                        <input type="radio" name="reader" id="leader-off">
+                        <label for="leader-off"><span>Off</span></label>
+                    </label>
+                    <button id="numbersChoice">Play</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+* {
+	font-family: Agency FB;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background: none;
+	border: none;
+	letter-spacing: 0.2rem;
+	font-weight: bold;
+	color: #bbb;
+}
+/* body {
+	background-color: #222;
+} */
+section#options {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	font-size: 2rem;
+	display: flex;
+	/* z-index: 3; */
+	justify-content: flex-start;
+	flex-direction: column;
+	align-content: space-around;
+	align-items: stretch;
+	padding: 0 2rem;
+	backdrop-filter: grayscale(1) blur(5px);
+	justify-content: space-around;
+}
+
+/* input:focus {
+	outline: auto;
+} */
+button#startOption, button#endOption {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	padding: 10px 25px;
+	font-size: 20px;
+	border-radius: 5px;
+	transition: all .2s ease-in;
+
+}
+button#endOption {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+button#startOption:hover, button#endOption:hover {
+	backdrop-filter: grayscale(1) blur(10px);
+	background: none;
+}
+
+#options h1 {
+	text-align: center;
+	font-size: 5rem;
+}
+
+#options #player-controls {
+	display: flex;
+	flex: 1;
+	justify-content: space-around;
+}
+
+#options #player-controls #controls1 p {
+	text-align: right;
+}
+#options #player-controls #controls1 p span,
+#options #player-controls #controls1 p input {
+	text-align: right;
+}
+
+#options #game-controls {
+	display: flex;
+	flex-direction: column;
+	align-content: stretch;
+	justify-content: space-evenly;
+	align-items: flex-start;
+	margin: 60px;
+}
+#options #game-controls p {
+	display: flex;
+}
+#options #game-controls span {
+	display: table-cell;
+	text-align: right;
+}
+#options #player-controls input[type="color"] {
+	width: 20.5rem;
+	height: 8rem;
+}
+#options #game-controls input,  
+#options #player-controls #controls1 input[type="text"] {
+	font-size: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-shadow: 0 0 15px green;
+}
+#options #player-controls #controls2 input[type="text"] {
+	font-size: 2rem;
+	padding: 0.5rem 1.5rem;
+	text-shadow: 0 0 15px orange;
+}
+/* #options #player-controls{ */
+/* content: '';
+		width: 100px;
+		height: 100px;
+		background: #000; */
+/* } */
+#options #game-controls input[type="range"] {
+	font-size: 2rem;
+	width: 20rem;
+}
+#options #game-controls select {
+	background: #000;
+	/* letter-spacing: .4rem; */
+	font-family: Arial, Helvetica, sans-serif;
+}
+#options #game-controls select option {
+	background: #000;
+	letter-spacing: .2rem;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#options #game-controls label input {
+	margin: 0 10px 2px;
+	background: #000;
+	letter-spacing: .2rem;
+	font-family: Arial, Helvetica, sans-serif;
+}

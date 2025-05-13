@@ -1,0 +1,19 @@
+body.dark-theme {
+  background: #222;
+}
+body.dark-theme button {
+  background: #333;
+  color: #bbb;
+}
+body.dark-theme p.dark-theme {
+  border-bottom: 4px solid #b6b6b6;
+  color: #b6b6b6;
+}
+body.dark-theme i {
+  color: #b6b6b6;
+}
+body.dark-theme .pause-element h1 {
+     color: #fff;
+    letter-spacing: 5px;
+    word-spacing: 19px;
+}
