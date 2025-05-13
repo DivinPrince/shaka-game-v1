@@ -327,7 +327,7 @@ export class MultiplayerUIManager {
    */
   showCreateRoomForm() {
     // Verify socket connection first
-    if (!this.game.socket || !this.game.socketConnected) {
+    if (!this.game.socket || this.game.socket.readyState !== WebSocket.OPEN) {
       this.showToast('Not connected to server. Please refresh the page.', 'error');
       return;
     }
@@ -340,7 +340,7 @@ export class MultiplayerUIManager {
    */
   showJoinRoomForm() {
     // Verify socket connection first
-    if (!this.game.socket || !this.game.socketConnected) {
+    if (!this.game.socket || this.game.socket.readyState !== WebSocket.OPEN) {
       this.showToast('Not connected to server. Please refresh the page.', 'error');
       return;
     }
@@ -389,8 +389,8 @@ export class MultiplayerUIManager {
     
     // Add each player
     room.players.forEach(player => {
-      const isCurrentPlayer = player.socketId === this.game.socket.id;
-      const isHost = player.socketId === room.host;
+      const isCurrentPlayer = player.id === this.game.playerId;
+      const isHost = player.id === room.host;
       
       const playerCard = document.createElement('div');
       playerCard.className = `player-card ${isHost ? 'host' : ''}`;

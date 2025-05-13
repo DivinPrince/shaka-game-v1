@@ -26,7 +26,7 @@ export class MultiplayerGame {
     this.gameRunning = false;
     this.countdownIndex = 0;
     
-    // Socket.io connection
+    // WebSocket connection
     this.socket = null;
     this.socketConnected = false;
     
@@ -51,7 +51,7 @@ export class MultiplayerGame {
     // Initialize settings
     this.settings.init();
     
-    // Initialize Socket.io connection - do this first
+    // Initialize WebSocket connection - do this first
     this.initializeSocket();
     
     // Initialize UI after socket connection attempt
@@ -63,37 +63,16 @@ export class MultiplayerGame {
   }
 
   /**
-   * Initialize Socket.io connection
+   * Initialize WebSocket connection
    */
   initializeSocket() {
     try {
-      // Check if io is defined
-      if (typeof io === 'undefined') {
-        console.error('Socket.io client is not loaded');
-        this.updateConnectionStatus('disconnected', 'Socket.io Not Available');
-        
-        // Create a notification that will display after UI is initialized
-        setTimeout(() => {
-          if (this.ui) {
-            this.ui.showToast('Socket.io not available. Please check server connection.', 'error');
-          }
-        }, 1000);
-        
-        return;
-      }
-      
       const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      // Create socket connection with explicit configuration
-      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'https://shaka-game-multiplayer-server.onrender.com';
-      console.log('Attempting to connect to Socket.io server at:', serverUrl);
+      // Create WebSocket connection
+      const serverUrl = isDevEnvironment ? 'ws://localhost:3000' : 'wss://shaka-game-multiplayer-server.onrender.com';
+      console.log('Attempting to connect to WebSocket server at:', serverUrl);
       
-      this.socket = io(serverUrl, {
-        reconnectionAttempts: 3,
-        timeout: 10000,
-        transports: ['websocket', 'polling'],
-        withCredentials: false,
-        forceNew: true
-      });
+      this.socket = new WebSocket(serverUrl);
       
       // Set up socket event handlers
       this.handleSocketEvents();
@@ -101,7 +80,7 @@ export class MultiplayerGame {
       // Add a connection timeout
       this.connectionTimeout = setTimeout(() => {
         if (!this.socketConnected) {
-          console.error('Socket connection timeout');
+          console.error('WebSocket connection timeout');
           this.updateConnectionStatus('disconnected', 'Connection Timeout');
           
           // Show error if UI is initialized
@@ -111,18 +90,18 @@ export class MultiplayerGame {
         }
       }, 5000);
     } catch (error) {
-      console.error('Error initializing socket:', error);
+      console.error('Error initializing WebSocket:', error);
       this.updateConnectionStatus('disconnected', 'Connection Error');
     }
   }
 
   /**
-   * Handle Socket.io events
+   * Handle WebSocket events
    */
   handleSocketEvents() {
-    // Handle socket connection
-    this.socket.on('connect', () => {
-      console.log('Connected to server with socket ID:', this.socket.id);
+    // Handle socket connection open
+    this.socket.onopen = () => {
+      console.log('Connected to server');
       this.socketConnected = true;
       
       // Update connection status indicator
@@ -132,11 +111,57 @@ export class MultiplayerGame {
       if (this.connectionTimeout) {
         clearTimeout(this.connectionTimeout);
       }
-    });
+    };
+    
+    // Handle socket messages
+    this.socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log('Received WebSocket message:', data);
+        
+        // Handle different event types
+        switch (data.type) {
+          case 'room_created':
+            this.handleRoomCreated(data.payload);
+            break;
+          case 'room_joined':
+            this.handleRoomJoined(data.payload);
+            break;
+          case 'player_joined':
+            this.handlePlayerJoined(data.payload);
+            break;
+          case 'player_update':
+            this.handlePlayerUpdate(data.payload);
+            break;
+          case 'player_left':
+            this.handlePlayerLeft(data.payload);
+            break;
+          case 'host_changed':
+            this.handleHostChanged(data.payload);
+            break;
+          case 'game_countdown_start':
+            this.handleGameCountdownStart(data.payload);
+            break;
+          case 'game_start':
+            this.handleGameStart(data.payload);
+            break;
+          case 'game_update':
+            this.handleGameUpdate(data.payload);
+            break;
+          case 'error':
+            this.handleError(data.payload);
+            break;
+          default:
+            console.warn('Unhandled WebSocket message type:', data.type);
+        }
+      } catch (error) {
+        console.error('Error handling WebSocket message:', error);
+      }
+    };
     
     // Handle socket disconnection
-    this.socket.on('disconnect', () => {
-      console.log('Disconnected from server');
+    this.socket.onclose = (event) => {
+      console.log('Disconnected from server:', event.code, event.reason);
       this.socketConnected = false;
       
       // Update connection status indicator
@@ -145,11 +170,11 @@ export class MultiplayerGame {
       if (this.ui) {
         this.ui.showToast('Disconnected from server. Please refresh the page.', 'error');
       }
-    });
+    };
     
     // Handle socket connection error
-    this.socket.on('connect_error', (error) => {
-      console.error('Connection error:', error);
+    this.socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
       this.socketConnected = false;
       
       // Update connection status indicator
@@ -158,83 +183,142 @@ export class MultiplayerGame {
       if (this.ui) {
         this.ui.showToast('Error connecting to server. Please refresh the page.', 'error');
       }
+    };
+  }
+
+  /**
+   * Send a message to the WebSocket server
+   * @param {string} type - Message type
+   * @param {object} payload - Message payload
+   */
+  sendMessage(type, payload) {
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      this.ui.showToast('Not connected to server. Please try again.', 'error');
+      return;
+    }
+    
+    const message = JSON.stringify({
+      type: type,
+      payload: payload
     });
     
-    // Handle room creation success
-    this.socket.on('room_created', ({ roomCode, playerId, room }) => {
-      this.roomCode = roomCode;
-      this.playerId = playerId;
-      this.isHost = true;
-      
-      // Update UI for waiting room
-      this.ui.showWaitingRoom(room);
-      this.ui.showToast(`Room created with code: ${roomCode}`, 'success');
-    });
+    this.socket.send(message);
+  }
+
+  /**
+   * Handle room creation success
+   * @param {object} data - Room creation data
+   */
+  handleRoomCreated(data) {
+    const { roomCode, playerId, room } = data;
+    this.roomCode = roomCode;
+    this.playerId = playerId;
+    this.isHost = true;
     
-    // Handle joining a room
-    this.socket.on('room_joined', ({ roomCode, playerId, room }) => {
-      this.roomCode = roomCode;
-      this.playerId = playerId;
-      this.isHost = room.host === this.socket.id;
-      
-      // Update UI for waiting room
-      this.ui.showWaitingRoom(room);
-      this.ui.showToast(`Joined room: ${roomCode}`, 'success');
-    });
+    // Update UI for waiting room
+    this.ui.showWaitingRoom(room);
+    this.ui.showToast(`Room created with code: ${roomCode}`, 'success');
+  }
+
+  /**
+   * Handle joining a room
+   * @param {object} data - Room join data
+   */
+  handleRoomJoined(data) {
+    const { roomCode, playerId, room } = data;
+    this.roomCode = roomCode;
+    this.playerId = playerId;
+    this.isHost = room.host === this.playerId;
     
-    // Handle new player joining the room
-    this.socket.on('player_joined', ({ room }) => {
-      // Update waiting room UI
-      this.ui.updateWaitingRoom(room);
-      this.ui.showToast('A new player has joined the room');
-    });
+    // Update UI for waiting room
+    this.ui.showWaitingRoom(room);
+    this.ui.showToast(`Joined room: ${roomCode}`, 'success');
+  }
+
+  /**
+   * Handle new player joining the room
+   * @param {object} data - Player joined data
+   */
+  handlePlayerJoined(data) {
+    const { room } = data;
+    // Update waiting room UI
+    this.ui.updateWaitingRoom(room);
+    this.ui.showToast('A new player has joined the room');
+  }
+
+  /**
+   * Handle player updates (ready status, etc.)
+   * @param {object} data - Player update data
+   */
+  handlePlayerUpdate(data) {
+    const { room } = data;
+    // Update waiting room UI
+    this.ui.updateWaitingRoom(room);
+  }
+
+  /**
+   * Handle player leaving
+   * @param {object} data - Player left data
+   */
+  handlePlayerLeft(data) {
+    const { room } = data;
+    // Update waiting room UI
+    this.ui.updateWaitingRoom(room);
+    this.ui.showToast('A player has left the room');
+  }
+
+  /**
+   * Handle host change
+   * @param {object} data - Host changed data
+   */
+  handleHostChanged(data) {
+    const { room, newHost } = data;
+    this.isHost = newHost === this.playerId;
     
-    // Handle player updates (ready status, etc.)
-    this.socket.on('player_update', ({ room }) => {
-      // Update waiting room UI
-      this.ui.updateWaitingRoom(room);
-    });
+    // Update waiting room UI
+    this.ui.updateWaitingRoom(room);
     
-    // Handle player leaving
-    this.socket.on('player_left', ({ room }) => {
-      // Update waiting room UI
-      this.ui.updateWaitingRoom(room);
-      this.ui.showToast('A player has left the room');
-    });
-    
-    // Handle host change
-    this.socket.on('host_changed', ({ room, newHost }) => {
-      this.isHost = newHost === this.socket.id;
-      
-      // Update waiting room UI
-      this.ui.updateWaitingRoom(room);
-      
-      if (this.isHost) {
-        this.ui.showToast('You are now the host of this room', 'success');
-      } else {
-        this.ui.showToast('The room has a new host');
-      }
-    });
-    
-    // Handle game countdown start
-    this.socket.on('game_countdown_start', ({ room }) => {
-      this.ui.showGameCountdown();
-    });
-    
-    // Handle game start
-    this.socket.on('game_start', ({ room }) => {
-      this.startMultiplayerGame(room);
-    });
-    
-    // Handle game updates
-    this.socket.on('game_update', ({ room, lastMove }) => {
-      this.updateGameState(room, lastMove);
-    });
-    
-    // Handle errors
-    this.socket.on('error', ({ message }) => {
-      this.ui.showToast(message, 'error');
-    });
+    if (this.isHost) {
+      this.ui.showToast('You are now the host of this room', 'success');
+    } else {
+      this.ui.showToast('The room has a new host');
+    }
+  }
+
+  /**
+   * Handle game countdown start
+   * @param {object} data - Countdown data
+   */
+  handleGameCountdownStart(data) {
+    const { room } = data;
+    this.ui.showGameCountdown();
+  }
+
+  /**
+   * Handle game start
+   * @param {object} data - Game start data
+   */
+  handleGameStart(data) {
+    const { room } = data;
+    this.startMultiplayerGame(room);
+  }
+
+  /**
+   * Handle game updates
+   * @param {object} data - Game update data
+   */
+  handleGameUpdate(data) {
+    const { room, lastMove } = data;
+    this.updateGameState(room, lastMove);
+  }
+
+  /**
+   * Handle errors
+   * @param {object} data - Error data
+   */
+  handleError(data) {
+    const { message } = data;
+    this.ui.showToast(message, 'error');
   }
 
   /**
@@ -269,12 +353,12 @@ export class MultiplayerGame {
    * @param {object} roomData - Room creation data
    */
   createRoom(roomData) {
-    if (!this.socket || !this.socketConnected) {
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       this.ui.showToast('Not connected to server. Please try again.', 'error');
       return;
     }
     
-    this.socket.emit('create_room', roomData);
+    this.sendMessage('create_room', roomData);
   }
 
   /**
@@ -282,12 +366,12 @@ export class MultiplayerGame {
    * @param {object} joinData - Room join data
    */
   joinRoom(joinData) {
-    if (!this.socket || !this.socketConnected) {
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       this.ui.showToast('Not connected to server. Please try again.', 'error');
       return;
     }
     
-    this.socket.emit('join_room', joinData);
+    this.sendMessage('join_room', joinData);
   }
 
   /**
@@ -297,12 +381,12 @@ export class MultiplayerGame {
   setReady(isReady) {
     this.isReady = isReady;
     
-    if (!this.socket || !this.socketConnected) {
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
       this.ui.showToast('Not connected to server. Please try again.', 'error');
       return;
     }
     
-    this.socket.emit('player_ready', {
+    this.sendMessage('player_ready', {
       roomCode: this.roomCode,
       playerId: this.playerId,
       isReady: isReady
@@ -451,15 +535,15 @@ export class MultiplayerGame {
     console.log(`Checking button value ${buttonValue} against target ${this.currentTarget}`);
     
     // Send the confirmation to the server
-    if (this.socket && this.socketConnected) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       console.log(`Sending confirmation to server: player=${player.id}, position=${player.positionIndex}`);
-      this.socket.emit('player_confirm', {
+      this.sendMessage('player_confirm', {
         roomCode: this.roomCode,
         playerId: this.playerId,
         position: player.positionIndex
       });
     } else {
-      console.error('Cannot send confirmation: Socket not connected');
+      console.error('Cannot send confirmation: WebSocket not connected');
     }
   }
 
@@ -482,15 +566,15 @@ export class MultiplayerGame {
     player.move(direction, buttons);
     
     // Send the move to the server
-    if (this.socket && this.socketConnected) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       console.log(`Sending move to server: player=${player.id}, direction=${direction}`);
-      this.socket.emit('player_move', {
+      this.sendMessage('player_move', {
         roomCode: this.roomCode,
         playerId: this.playerId,
         position: player.positionIndex
       });
     } else {
-      console.error('Cannot send move: Socket not connected');
+      console.error('Cannot send move: WebSocket not connected');
     }
   }
 
