@@ -12,6 +12,13 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
+    // Rollup specific options
+    rollupOptions: {
+      input: {
+        main: './index.html',
+        multi: './multi.html'
+      }
+    }
   },
   
   // Development server options
