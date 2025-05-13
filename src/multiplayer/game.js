@@ -82,8 +82,9 @@ export class MultiplayerGame {
         return;
       }
       
+      const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       // Create socket connection with explicit configuration
-      const serverUrl = 'http://localhost:3000';
+      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'https://shaka-game-multiplayer-server.onrender.com';
       console.log('Attempting to connect to Socket.io server at:', serverUrl);
       
       this.socket = io(serverUrl, {
