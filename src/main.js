@@ -1,5 +1,4 @@
 import { Game } from './utils/game.js';
-import './styles/index.css';
 
 /**
  * Shaka Game - A multiplayer number finding game
