@@ -98,30 +98,6 @@ export class MultiplayerGame {
       
       // Set up socket event handlers
       this.handleSocketEvents();
-      
-      // Add a connection timeout - increased to accommodate slow rendered servers
-      this.connectionTimeout = setTimeout(() => {
-        if (!this.socketConnected) {
-          console.error('Socket connection timeout');
-          this.updateConnectionStatus('disconnected', 'Connection Timeout');
-          
-          // Show error if UI is initialized
-          if (this.ui) {
-            this.ui.showToast('Connection to game server timed out. The server may be starting up - please try again in a minute.', 'error');
-          }
-          
-          // Try reconnecting once automatically
-          if (!this.reconnectionAttempted) {
-            this.reconnectionAttempted = true;
-            console.log('Attempting to reconnect automatically...');
-            if (this.ui) {
-              this.ui.showToast('Attempting to reconnect...', 'info');
-            }
-            this.socket.disconnect();
-            setTimeout(() => this.initializeSocket(), 2000);
-          }
-        }
-      }, 15000); // Increased from 5000 to 15000 ms
     } catch (error) {
       console.error('Error initializing socket:', error);
       this.updateConnectionStatus('disconnected', 'Connection Error');
