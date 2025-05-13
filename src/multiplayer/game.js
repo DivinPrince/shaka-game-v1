@@ -84,12 +84,13 @@ export class MultiplayerGame {
       
       const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       // Create socket connection with explicit configuration
-      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'wss://shaka-game-multiplayer-server.onrender.com';
+      const serverUrl = isDevEnvironment ? 'http://localhost:3000' : 'https://shaka-game-multiplayer-server.onrender.com';
       console.log('Attempting to connect to Socket.io server at:', serverUrl);
       
       this.socket = io(serverUrl, {
-        reconnectionAttempts: 3,
-        timeout: 10000,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+        timeout: 20000, // Increase timeout to 20 seconds for slower connections
         transports: ['websocket', 'polling'],
         withCredentials: false,
         forceNew: true
@@ -98,7 +99,7 @@ export class MultiplayerGame {
       // Set up socket event handlers
       this.handleSocketEvents();
       
-      // Add a connection timeout
+      // Add a connection timeout - increased to accommodate slow rendered servers
       this.connectionTimeout = setTimeout(() => {
         if (!this.socketConnected) {
           console.error('Socket connection timeout');
@@ -106,10 +107,21 @@ export class MultiplayerGame {
           
           // Show error if UI is initialized
           if (this.ui) {
-            this.ui.showToast('Failed to connect to server. Make sure the server is running on port 3000.', 'error');
+            this.ui.showToast('Connection to game server timed out. The server may be starting up - please try again in a minute.', 'error');
+          }
+          
+          // Try reconnecting once automatically
+          if (!this.reconnectionAttempted) {
+            this.reconnectionAttempted = true;
+            console.log('Attempting to reconnect automatically...');
+            if (this.ui) {
+              this.ui.showToast('Attempting to reconnect...', 'info');
+            }
+            this.socket.disconnect();
+            setTimeout(() => this.initializeSocket(), 2000);
           }
         }
-      }, 5000);
+      }, 15000); // Increased from 5000 to 15000 ms
     } catch (error) {
       console.error('Error initializing socket:', error);
       this.updateConnectionStatus('disconnected', 'Connection Error');
