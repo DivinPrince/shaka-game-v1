@@ -1,15 +1,4 @@
 import { Game } from './game.js';
-
-/**
- * Shaka Game - A multiplayer number finding game
- * 
- * Refactored with a modular, object-oriented approach for better:
- * - Code organization
- * - Maintainability
- * - Extensibility
- * - Reusability
- */
-
 // Initialize the game when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Create and initialize the game
