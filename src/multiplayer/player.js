@@ -84,23 +84,24 @@ export class MultiplayerPlayer {
     this.moveCount++;
     
     // Update position
-    let newPosition = this.positionIndex + direction;
+    this.positionIndex += direction;
     
     // Adjust for board boundaries
-    if (newPosition < 1) {
-      newPosition += 100;
-    } else if (newPosition > 100) {
-      newPosition -= 100;
+    if (this.positionIndex === 110 || this.positionIndex === 101) {
+      this.positionIndex = 1;
+    } else if (this.positionIndex === 101 && direction === 10) {
+      this.positionIndex = 2;
+    } else if (101 < this.positionIndex && this.positionIndex < 110) {
+      this.positionIndex -= 99;
+    } else if (this.positionIndex < 1) {
+      this.positionIndex += 99;
+    } else if (this.positionIndex === -9) {
+      this.positionIndex = 100;
     }
     
-    // Adjust for row wrapping
-    if (direction === 1 && newPosition % 10 === 1) {
-      newPosition -= 10;
-    } else if (direction === -1 && newPosition % 10 === 0) {
-      newPosition += 10;
-    }
-    
-    this.positionIndex = newPosition;
+    // Keep position in bounds (safety check)
+    if (this.positionIndex < 1) this.positionIndex = 1;
+    if (this.positionIndex > 100) this.positionIndex = 100;
     
     // Update visual position - ensure the button exists
     const buttonIndex = this.positionIndex - 1;

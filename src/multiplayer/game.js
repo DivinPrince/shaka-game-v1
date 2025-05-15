@@ -42,6 +42,7 @@ export class MultiplayerGame {
     // Bind methods
     this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleSocketEvents = this.handleSocketEvents.bind(this);
+    this.reconnectToServer = this.reconnectToServer.bind(this);
   }
 
   /**
@@ -59,6 +60,12 @@ export class MultiplayerGame {
       // Create UI manager
       this.ui = new MultiplayerUIManager(this);
       this.ui.init();
+      
+      // Bind reconnect button
+      const reconnectBtn = document.getElementById('reconnect-btn');
+      if (reconnectBtn) {
+        reconnectBtn.addEventListener('click', this.reconnectToServer);
+      }
     }, 800);
   }
 
@@ -168,7 +175,7 @@ export class MultiplayerGame {
       this.updateConnectionStatus('disconnected', 'Disconnected');
       
       if (this.ui) {
-        this.ui.showToast('Disconnected from server. Please refresh the page.', 'error');
+        this.ui.showToast('Disconnected from server. Click the reconnect button to try again.', 'error');
       }
     };
     
@@ -181,7 +188,7 @@ export class MultiplayerGame {
       this.updateConnectionStatus('disconnected', 'Connection Error');
       
       if (this.ui) {
-        this.ui.showToast('Error connecting to server. Please refresh the page.', 'error');
+        this.ui.showToast('Error connecting to server. Click the reconnect button to try again.', 'error');
       }
     };
   }
@@ -597,13 +604,14 @@ export class MultiplayerGame {
     // Update player positions and scores
     room.players.forEach(serverPlayer => {
       const player = this.players.find(p => p.id === serverPlayer.id);
-      if (!player || player.id === this.playerId) return;
-      // Update position if changed
-      if (player.positionIndex !== serverPlayer.position) {
+      if (!player) return;
+      
+      // Update position if changed for other players
+      if (player.id !== this.playerId && player.positionIndex !== serverPlayer.position) {
         player.updatePosition(serverPlayer.position, this.board.getAllButtons());
       }
       
-      // Update score if changed
+      // Update score for all players, including the current player
       if (player.score !== serverPlayer.score) {
         player.score = serverPlayer.score;
         console.log(`Player ${player.name} score updated to ${player.score}`);
@@ -675,5 +683,50 @@ export class MultiplayerGame {
     
     // Return to the menu
     window.location.reload();
+  }
+
+  /**
+   * Reconnect to the server
+   */
+  reconnectToServer() {
+    // Update UI to show connecting status
+    this.updateConnectionStatus('connecting', 'Reconnecting...');
+    
+    if (this.ui) {
+      this.ui.showToast('Attempting to reconnect to server...', '');
+    }
+    
+    // Clear any existing socket
+    if (this.socket) {
+      // Remove event listeners to prevent memory leaks
+      this.socket.onopen = null;
+      this.socket.onmessage = null;
+      this.socket.onclose = null;
+      this.socket.onerror = null;
+      
+      // Close the socket if it's still open
+      if (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING) {
+        this.socket.close();
+      }
+      
+      this.socket = null;
+    }
+    
+    // Initialize a new socket connection
+    this.initializeSocket();
+    
+    // If we were in a room before, try to rejoin automatically
+    if (this.roomCode && this.playerId) {
+      // Wait a bit to ensure connection is established before attempting to rejoin
+      setTimeout(() => {
+        if (this.socketConnected) {
+          // Send message to server to rejoin the room
+          this.sendMessage('rejoin_room', {
+            roomCode: this.roomCode,
+            playerId: this.playerId
+          });
+        }
+      }, 1000);
+    }
   }
 } 
