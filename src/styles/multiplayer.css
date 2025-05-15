@@ -478,6 +478,27 @@
 
 .status-text {
   font-size: 0.9rem;
+  margin-right: 8px;
+}
+
+#reconnect-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin-left: 5px;
+  display: none;
+}
+
+#reconnect-btn:hover {
+  background-color: #388e3c;
+}
+
+#connection-status.disconnected #reconnect-btn {
+  display: inline-block;
 }
 
 #connection-status.connecting .status-dot {
