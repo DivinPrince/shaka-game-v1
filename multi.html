@@ -6,7 +6,7 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="stylesheet" href="/src/styles/index.css">
     <link rel="stylesheet" href="/src/styles/shaka.css">
-    <link rel="stylesheet" href="/src/styles/multiplayer.css">
+    <link rel="stylesheet" href="/src/styles/multiplayer-tailwind.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -16,27 +16,29 @@
         <h2 id="Game-title"><span id="one">Shaka</span> <span id="two">Multiplayer</span></h2>
 
         <!-- Connection Status Indicator -->
-        <div id="connection-status" class="connecting">
-            <span class="status-dot"></span>
-            <span class="status-text">Connecting...</span>
-            <button id="reconnect-btn" style="display: none;">Reconnect</button>
+        <div id="connection-status" class="connection-status mx-auto my-4 w-fit">
+            <span class="status-dot status-connecting"></span>
+            <span class="text-sm font-medium text-slate-300">Connecting...</span>
+            <button id="reconnect-btn" class="btn-secondary text-xs px-3 py-1 ml-2 hidden">Reconnect</button>
         </div>
 
         <!-- Multiplayer Menu -->
-        <div id="multiplayer-menu">
-            <div class="menu-section">
-                <h3>Join or Create a Room</h3>
-                <div class="menu-options">
-                    <button id="create-room-btn" class="menu-btn">
-                        <span class="btn-icon">🏠</span>
+        <div id="multiplayer-menu" class="max-w-2xl mx-auto mt-8 p-12 card animate-fade-in-up">
+            <div class="text-center">
+                <div class="card-header">
+                    <h3 class="card-title">Join or Create a Room</h3>
+                </div>
+                <div class="space-y-4 max-w-md mx-auto">
+                    <button id="create-room-btn" class="btn-menu w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800">
+                        <span class="text-xl">🏠</span>
                         Create Room
                     </button>
-                    <button id="join-room-btn" class="menu-btn">
-                        <span class="btn-icon">🚪</span>
+                    <button id="join-room-btn" class="btn-menu w-full bg-gradient-to-r from-secondary-600 to-secondary-700 hover:from-secondary-700 hover:to-secondary-800">
+                        <span class="text-xl">🚪</span>
                         Join Room
                     </button>
-                    <a href="/" class="menu-btn back-btn">
-                        <span class="btn-icon">↩️</span>
+                    <a href="/" class="btn-menu w-full">
+                        <span class="text-xl">↩️</span>
                         Back to Main Menu
                     </a>
                 </div>
@@ -44,17 +46,19 @@
         </div>
 
         <!-- Create Room Form -->
-        <div id="create-room-form" class="modal" style="display: none;">
-            <div class="modal-content">
-                <h3>Create a Room</h3>
-                <form id="create-room-form-element">
+        <div id="create-room-form" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" style="display: none;">
+            <div class="card w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 animate-slide-in">
+                <div class="card-header">
+                    <h3 class="card-title">Create a Room</h3>
+                </div>
+                <form id="create-room-form-element" class="space-y-6">
                     <div class="form-group">
-                        <label for="player-name">Your Name:</label>
-                        <input type="text" id="player-name" required minlength="3" maxlength="20">
+                        <label for="player-name" class="input-label">Your Name</label>
+                        <input type="text" id="player-name" class="input-field" placeholder="Enter your name" required minlength="3" maxlength="20">
                     </div>
                     <div class="form-group">
-                        <label for="max-players">Maximum Players (2-10):</label>
-                        <select id="max-players">
+                        <label for="max-players" class="input-label">Maximum Players (2-10)</label>
+                        <select id="max-players" class="input-field">
                             <option value="2">2 Players</option>
                             <option value="3">3 Players</option>
                             <option value="4" selected>4 Players</option>
@@ -66,39 +70,47 @@
                             <option value="10">10 Players</option>
                         </select>
                     </div>
-                    <div class="form-group controls-group">
-                        <h4>Controls</h4>
-                        <div class="control-inputs">
-                            <div class="control-input">
-                                <label for="control-up">Up:</label>
-                                <input type="text" id="control-up" value="ArrowUp" readonly>
+                    <div class="form-group">
+                        <div class="border border-slate-600 rounded-xl p-6 bg-slate-800/30">
+                            <h4 class="flex items-center gap-2 text-lg font-semibold text-white mb-4">
+                                <span class="text-xl">🎮</span>
+                                Controls
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                <div class="control-input">
+                                    <label for="control-up">Up</label>
+                                    <input type="text" id="control-up" value="ArrowUp" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="control-right">Right</label>
+                                    <input type="text" id="control-right" value="ArrowRight" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="control-down">Down</label>
+                                    <input type="text" id="control-down" value="ArrowDown" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="control-left">Left</label>
+                                    <input type="text" id="control-left" value="ArrowLeft" readonly>
+                                </div>
+                                <div class="control-input md:col-span-2">
+                                    <label for="control-confirm">Confirm</label>
+                                    <input type="text" id="control-confirm" value="Enter" readonly>
+                                </div>
                             </div>
-                            <div class="control-input">
-                                <label for="control-right">Right:</label>
-                                <input type="text" id="control-right" value="ArrowRight" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="control-down">Down:</label>
-                                <input type="text" id="control-down" value="ArrowDown" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="control-left">Left:</label>
-                                <input type="text" id="control-left" value="ArrowLeft" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="control-confirm">Confirm:</label>
-                                <input type="text" id="control-confirm" value="Enter" readonly>
-                            </div>
+                            <button type="button" id="customize-controls-btn" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                                <span class="text-lg mr-2">⚙️</span>
+                                Customize Controls
+                            </button>
                         </div>
-                        <button type="button" id="customize-controls-btn">Customize Controls</button>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="primary-btn">
-                            <span class="btn-icon">✨</span>
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="btn-primary flex-1">
+                            <span class="text-lg">✨</span>
                             Create Room
                         </button>
-                        <button type="button" class="cancel-btn">
-                            <span class="btn-icon">❌</span>
+                        <button type="button" class="btn-outline flex-1">
+                            <span class="text-lg">❌</span>
                             Cancel
                         </button>
                     </div>
@@ -107,51 +119,61 @@
         </div>
 
         <!-- Join Room Form -->
-        <div id="join-room-form" class="modal" style="display: none;">
-            <div class="modal-content">
-                <h3>Join a Room</h3>
-                <form id="join-room-form-element">
+        <div id="join-room-form" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in" style="display: none;">
+            <div class="card w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 animate-slide-in">
+                <div class="card-header">
+                    <h3 class="card-title">Join a Room</h3>
+                </div>
+                <form id="join-room-form-element" class="space-y-6">
                     <div class="form-group">
-                        <label for="join-player-name">Your Name:</label>
-                        <input type="text" id="join-player-name" required minlength="3" maxlength="20">
+                        <label for="join-player-name" class="input-label">Your Name</label>
+                        <input type="text" id="join-player-name" class="input-field" placeholder="Enter your name" required minlength="3" maxlength="20">
                     </div>
                     <div class="form-group">
-                        <label for="room-code">Room Code:</label>
-                        <input type="text" id="room-code" required minlength="6" maxlength="6" placeholder="ABCDEF">
+                        <label for="room-code" class="input-label">Room Code</label>
+                        <input type="text" id="room-code" class="input-field text-center font-mono text-xl tracking-widest uppercase" placeholder="ABCDEF" required minlength="6" maxlength="6">
                     </div>
-                    <div class="form-group controls-group">
-                        <h4>Controls</h4>
-                        <div class="control-inputs">
-                            <div class="control-input">
-                                <label for="join-control-up">Up:</label>
-                                <input type="text" id="join-control-up" value="ArrowUp" readonly>
+                    <div class="form-group">
+                        <div class="border border-slate-600 rounded-xl p-6 bg-slate-800/30">
+                            <h4 class="flex items-center gap-2 text-lg font-semibold text-white mb-4">
+                                <span class="text-xl">🎮</span>
+                                Controls
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                                <div class="control-input">
+                                    <label for="join-control-up">Up</label>
+                                    <input type="text" id="join-control-up" value="ArrowUp" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="join-control-right">Right</label>
+                                    <input type="text" id="join-control-right" value="ArrowRight" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="join-control-down">Down</label>
+                                    <input type="text" id="join-control-down" value="ArrowDown" readonly>
+                                </div>
+                                <div class="control-input">
+                                    <label for="join-control-left">Left</label>
+                                    <input type="text" id="join-control-left" value="ArrowLeft" readonly>
+                                </div>
+                                <div class="control-input md:col-span-2">
+                                    <label for="join-control-confirm">Confirm</label>
+                                    <input type="text" id="join-control-confirm" value="Enter" readonly>
+                                </div>
                             </div>
-                            <div class="control-input">
-                                <label for="join-control-right">Right:</label>
-                                <input type="text" id="join-control-right" value="ArrowRight" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="join-control-down">Down:</label>
-                                <input type="text" id="join-control-down" value="ArrowDown" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="join-control-left">Left:</label>
-                                <input type="text" id="join-control-left" value="ArrowLeft" readonly>
-                            </div>
-                            <div class="control-input">
-                                <label for="join-control-confirm">Confirm:</label>
-                                <input type="text" id="join-control-confirm" value="Enter" readonly>
-                            </div>
+                            <button type="button" id="join-customize-controls-btn" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                                <span class="text-lg mr-2">⚙️</span>
+                                Customize Controls
+                            </button>
                         </div>
-                        <button type="button" id="join-customize-controls-btn">Customize Controls</button>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" class="primary-btn">
-                            <span class="btn-icon">🚀</span>
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="btn-secondary flex-1">
+                            <span class="text-lg">🚀</span>
                             Join Room
                         </button>
-                        <button type="button" class="cancel-btn">
-                            <span class="btn-icon">❌</span>
+                        <button type="button" class="btn-outline flex-1">
+                            <span class="text-lg">❌</span>
                             Cancel
                         </button>
                     </div>
@@ -160,33 +182,35 @@
         </div>
 
         <!-- Waiting Room -->
-        <div id="waiting-room" style="display: none;">
-            <div class="waiting-header">
-                <h3>Waiting for Players</h3>
-                <div class="room-info">
-                    <div class="room-code">
-                        <span>Room Code:</span>
-                        <span id="display-room-code" class="code">ABCDEF</span>
-                        <button id="copy-room-code" title="Copy room code">📋</button>
+        <div id="waiting-room" class="max-w-4xl mx-auto mt-8 card p-8 animate-fade-in-up" style="display: none;">
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-white mb-6">Waiting for Players</h3>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 p-6 bg-slate-800/50 rounded-xl border border-slate-600">
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-300 font-medium">Room Code:</span>
+                        <span id="display-room-code" class="room-code">ABCDEF</span>
+                        <button id="copy-room-code" class="p-2 bg-slate-700 hover:bg-primary-600 border border-slate-600 hover:border-primary-500 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg" title="Copy room code">
+                            <span class="text-lg">📋</span>
+                        </button>
                     </div>
-                    <div class="player-count">
-                        <span>Players:</span>
-                        <span id="player-count">1/4</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-300 font-medium">Players:</span>
+                        <span id="player-count" class="px-3 py-1 bg-primary-600 text-white font-bold rounded-full">1/4</span>
                     </div>
                 </div>
             </div>
             
-            <div class="players-list" id="players-list">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8" id="players-list">
                 <!-- Players will be dynamically added here -->
             </div>
             
-            <div class="waiting-actions">
-                <button id="ready-btn" class="primary-btn">
-                    <span class="btn-icon">✅</span>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button id="ready-btn" class="btn-secondary flex-1">
+                    <span class="text-lg">✅</span>
                     Ready
                 </button>
-                <button id="leave-room-btn" class="cancel-btn">
-                    <span class="btn-icon">🚪</span>
+                <button id="leave-room-btn" class="btn-danger flex-1">
+                    <span class="text-lg">🚪</span>
                     Leave Room
                 </button>
             </div>
@@ -194,11 +218,11 @@
 
         <!-- Game Section -->
         <section id="numbers" style="display: none;">
-            <section id="numbers-head">
+            <section id="numbers-head" class="flex flex-wrap justify-between gap-3 p-4 bg-slate-800/80 rounded-xl border border-slate-600 mb-4 shadow-lg">
                 <!-- Player scores will be dynamically added here -->
-                <div class="dark-theme">
-                    <p>Shaka:</p>
-                    <span id="current-target" class="1">One</span>
+                <div class="flex items-center gap-3 px-4 py-2 bg-slate-700/50 rounded-lg">
+                    <span class="text-slate-300 font-medium">Shaka:</span>
+                    <span id="current-target" class="text-2xl font-bold text-white bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">One</span>
                 </div>
             </section>
             <section id="numbers-parent"></section>
@@ -209,9 +233,15 @@
                 <div class="down">
                     <h1> a s d</h1>
                 </div>
-                <div class="pause-actions">
-                    <button id="resume-btn">Resume</button>
-                    <button id="exit-game-btn">Exit Game</button>
+                <div class="flex justify-center gap-4 mt-8">
+                    <button id="resume-btn" class="btn-primary">
+                        <span class="text-lg">▶️</span>
+                        Resume
+                    </button>
+                    <button id="exit-game-btn" class="btn-danger">
+                        <span class="text-lg">🚪</span>
+                        Exit Game
+                    </button>
                 </div>
             </section>
             <section id="game-over" style="display: none;">
@@ -219,9 +249,15 @@
                 <div class="multiplayer-results" id="multiplayer-results">
                     <!-- Results will be dynamically added here -->
                 </div>
-                <div class="game-over-actions">
-                    <button id="play-again-btn">Play Again</button>
-                    <button id="return-to-menu-btn">Return to Menu</button>
+                <div class="flex justify-center gap-4 mt-8">
+                    <button id="play-again-btn" class="btn-secondary">
+                        <span class="text-lg">🔄</span>
+                        Play Again
+                    </button>
+                    <button id="return-to-menu-btn" class="btn-outline">
+                        <span class="text-lg">🏠</span>
+                        Return to Menu
+                    </button>
                 </div>
             </section>
         </section>
