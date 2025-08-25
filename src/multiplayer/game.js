@@ -83,19 +83,6 @@ export class MultiplayerGame {
       
       // Set up socket event handlers
       this.handleSocketEvents();
-      
-      // Add a connection timeout
-      this.connectionTimeout = setTimeout(() => {
-        if (!this.socketConnected) {
-          console.error('WebSocket connection timeout');
-          this.updateConnectionStatus('disconnected', 'Connection Timeout');
-          
-          // Show error if UI is initialized
-          if (this.ui) {
-            this.ui.showToast('Failed to connect to server. Make sure the server is running on port 3000.', 'error');
-          }
-        }
-      }, 5000);
     } catch (error) {
       console.error('Error initializing WebSocket:', error);
       this.updateConnectionStatus('disconnected', 'Connection Error');
