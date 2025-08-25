@@ -76,7 +76,7 @@ export class MultiplayerGame {
     try {
       const isDevEnvironment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       // Create WebSocket connection
-      const serverUrl = 'wss://shaka-game-multiplayer-server.medical-ai.workers.dev';
+      const serverUrl = 'wss://mm74owuczg.relais.dev';
       console.log('Attempting to connect to WebSocket server at:', serverUrl);
       
       this.socket = new WebSocket(serverUrl);
